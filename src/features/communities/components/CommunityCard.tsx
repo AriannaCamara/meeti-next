@@ -6,7 +6,7 @@ import { pluralize } from "@/shared/utils/string"
 
 type Props = {
     community: Omit<SelectCommunity, 'createdAt' | 'createdBy'> & {
-      membersCount : string
+      membersCount? : string
     }
     target?: boolean
 }

@@ -1,58 +1,69 @@
 "use client"
 
+import { useEffect, useState } from "react"
+import { useSearchParams, useRouter } from "next/navigation"
 import { Form, FormError, FormInput, FormLabel, FormSubmit } from "@/shared/components/forms"
-import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { SetPasswordInput, SetPasswordSchema } from "../schemas/authSchema"
-import { redirect, useSearchParams } from "next/navigation"
 import { setPasswordAction } from "../actions/auth-actions"
 import toast from "react-hot-toast"
 
 export default function SetPasswordForm() {
+    const searchParams = useSearchParams()
+    const router = useRouter()
 
-    const searchParams = useSearchParams();
-    const token = searchParams.get('token')
-    if(!token) redirect('/auth/forgot-password')
+    const [token, setToken] = useState<string | null>(null)
 
-    const {register, handleSubmit, formState: { errors } } = useForm({
-        resolver: zodResolver(SetPasswordSchema),
-        mode: 'all'
-    })
+    useEffect(() => {
+        const t = searchParams.get("token")
 
-    const onSubmit = async(data: SetPasswordInput) => {
-        const {error, success } = await setPasswordAction(data, token)
-        if(error) {
-            toast.error(error)
+        if (!t) {
+            router.push("/auth/forgot-password")
+        } else {
+            setToken(t)
         }
-        if(success) {
+    }, [searchParams, router])
+
+    const { register, handleSubmit, formState: { errors } } =
+        useForm<SetPasswordInput>({
+            resolver: zodResolver(SetPasswordSchema),
+            mode: "all"
+        })
+
+    const onSubmit = async (data: SetPasswordInput) => {
+        if (!token) return
+
+        const { error, success } = await setPasswordAction(data, token)
+
+        if (error) toast.error(error)
+        if (success) {
             toast.success(success)
-            redirect('/auth/login')
+            router.push("/auth/login")
         }
     }
 
-    return(
+    return (
         <Form onSubmit={handleSubmit(onSubmit)}>
             <FormLabel htmlFor="newPassword">Nuevo Password</FormLabel>
-            <FormInput 
+
+            <FormInput
                 type="password"
                 id="newPassword"
-                placeholder="Ingresa tu nuevo password"
-                {...register('newPassword')}
+                {...register("newPassword")}
             />
             {errors.newPassword && <FormError>{errors.newPassword.message}</FormError>}
 
             <FormLabel htmlFor="passwordConfirmation">Repetir Password</FormLabel>
-            <FormInput 
+
+            <FormInput
                 type="password"
                 id="passwordConfirmation"
-                placeholder="Repite tu password"
-                {...register('passwordConfirmation')}
+                {...register("passwordConfirmation")}
             />
             {errors.passwordConfirmation && <FormError>{errors.passwordConfirmation.message}</FormError>}
 
-            <FormSubmit 
-                value='Reestablecer Password'
-            />
+            <FormSubmit value="Reestablecer Password" />
         </Form>
     )
 }
