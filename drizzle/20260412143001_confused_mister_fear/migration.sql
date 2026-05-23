@@ -1,0 +1,1 @@
+ALTER TABLE "communities" ALTER COLUMN "created_at" SET NOT NULL;

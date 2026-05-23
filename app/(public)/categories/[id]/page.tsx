@@ -1,0 +1,32 @@
+import Heading from "@/shared/components/typography/Heading";
+import { generatePageTitle } from "@/shared/utils/metadata";
+import CategoryMeetis from "@/src/features/meetis/components/CategoryMeetis";
+import { categoryService } from "@/src/features/meetis/services/CategoryService";
+import { Metadata } from "next";
+import { cache } from "react";
+
+const getCategoryCached = cache (async (id: string) => {
+  const category = await categoryService.getCategoryById(id)
+  return category
+})
+
+export async function generateMetadata({params}: PageProps<'/categories/[id]'>) : Promise<Metadata> {
+    const { id } = await params
+    const category = await getCategoryCached(id)
+
+    return {
+        title: generatePageTitle(`Categoría: ${category.name}`)
+    }
+}
+
+export default async function CategoryPage({params}: PageProps<'/categories/[id]'>)  {
+    const { id } = await params
+    const category = await getCategoryCached(id)
+
+    return (
+      <main className="max-w-7xl mx-auto px-5 lg:px-0 py-10">
+        <Heading className="bg-linear-to-r from-cyan-500 to-cyan-800 text-center bg-clip-text text-transparent">Meetis en la categoría: {category.name}</Heading>
+        <CategoryMeetis categoryId={category.id} />
+      </main>
+    )
+}
