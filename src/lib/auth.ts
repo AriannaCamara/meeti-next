@@ -5,7 +5,7 @@ import { db } from '../db'
 import { AuthEmailService } from '../emails/services/AuthEmailService'
 
 export const auth = betterAuth({
-    trustedOrigins: ['http://192.168.56.1:3000'],
+    trustedOrigins: [process.env.APP_URL || 'http://localhost:3000'],
     database: drizzleAdapter(db, {
         provider: 'pg',
         usePlural: true

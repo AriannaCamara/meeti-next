@@ -1,85 +1,67 @@
-import { defineRelations } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import * as schema from "../schema";
-import { optional } from "zod";
 
-export const relations = defineRelations(schema, (r) => ({
-  users: {
-    sessions: r.many.sessions({
-      from: r.users.id,
-      to: r.sessions.userId
-    }),
-    accounts: r.many.accounts({
-      from: r.users.id,
-      to: r.accounts.userId
-    }),
-    communities: r.many.community({
-      from: r.users.id,
-      to: r.community.createdBy,
-    }),
-    meetis: r.many.meeti({
-      from: r.users.id,
-      to: r.meeti.createdBy,
-    }),
-  },
+export const userRelations = relations(schema.users, ({ one, many }) => ({
+  sessions: many(schema.sessions),
+  accounts: many(schema.accounts),
+  communities: many(schema.community),
+  meetis: many(schema.meeti),
+}));
 
-  sessions: {
-    user: r.one.users({
-      from: r.sessions.userId,
-      to: r.users.id
-    })
-  },
+export const sessionRelations = relations(schema.sessions, ({ one }) => ({
+  user: one(schema.users, {
+    fields: [schema.sessions.userId],
+    references: [schema.users.id],
+  }),
+}));
 
-  accounts: {
-    user: r.one.users({
-      from: r.accounts.userId, 
-      to: r.users.id
-    }),
-  },
-  communityMembers: {
-      community: r.one.community({
-        from: r.communityMembers.communityId,
-        to: r.community.id,
-        optional: false
-      }),
-      user: r.one.users({
-        from: r.communityMembers.userId,
-        to: r.users.id,
-        optional: false
-      })
-    },
-    meeti: {
-      location: r.one.meetiLocations({
-        from: r.meeti.id,
-        to: r.meetiLocations.meetiId
-      }),
-      category: r.one.category({
-        from: r.meeti.categoryId,
-        to: r.category.id,
-        optional: false
-      }),
-      community: r.one.community({
-        from: r.meeti.communityId,
-        to: r.community.id,
-        optional: false
-      }),
-      admin: r.one.users({
-        from: r.meeti.createdBy,
-        to: r.users.id,
-        optional: false
-      })
-    },
-    meetiAttendees: {
-      user: r.one.users({
-        from: r.meetiAttendees.userId,
-        to: r.users.id,
-        optional: false
-      })
-    },
-    meetiLocations: {
-      meeti: r.one.meeti({
-        from: r.meetiLocations.meetiId,
-        to: r.meeti.id,
-        optional: false
-      })
-    }
+export const accountRelations = relations(schema.accounts, ({ one }) => ({
+  user: one(schema.users, {
+    fields: [schema.accounts.userId],
+    references: [schema.users.id],
+  }),
+}));
+
+export const communityMemberRelations = relations(schema.communityMembers, ({ one }) => ({
+  community: one(schema.community, {
+    fields: [schema.communityMembers.communityId],
+    references: [schema.community.id],
+  }),
+  user: one(schema.users, {
+    fields: [schema.communityMembers.userId],
+    references: [schema.users.id],
+  }),
+}));
+
+export const meetiRelations = relations(schema.meeti, ({ one }) => ({
+  location: one(schema.meetiLocations, {
+    fields: [schema.meeti.id],
+    references: [schema.meetiLocations.meetiId],
+  }),
+  category: one(schema.category, {
+    fields: [schema.meeti.categoryId],
+    references: [schema.category.id],
+  }),
+  community: one(schema.community, {
+    fields: [schema.meeti.communityId],
+    references: [schema.community.id],
+  }),
+  admin: one(schema.users, {
+    fields: [schema.meeti.createdBy],
+    references: [schema.users.id],
+  }),
+}));
+
+export const meetiAttendeesRelations = relations(schema.meetiAttendees, ({ one }) => ({
+  user: one(schema.users, {
+    fields: [schema.meetiAttendees.userId],
+    references: [schema.users.id],
+  }),
+}));
+
+export const meetiLocationsRelations = relations(schema.meetiLocations, ({ one }) => ({
+  meeti: one(schema.meeti, {
+    fields: [schema.meetiLocations.meetiId],
+    references: [schema.meeti.id],
+  }),
 }));
