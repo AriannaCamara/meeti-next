@@ -4,9 +4,7 @@ import { SelectCategory } from "../types/meeti.types"
 import { useFormContext } from "react-hook-form"
 import { MeetiInput } from "../schemas/meetiSchema"
 
-const baseUrl = process.env.SITE_URL || 'http://localhost:3000'
-
-const categoriesPromise = fetch(`${baseUrl}/api/categories`)
+const categoriesPromise = fetch(`/api/categories`)
   .then(res => res.json())
 
 function CategoryOptions() {
