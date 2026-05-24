@@ -20,9 +20,8 @@ class ProfileRepository implements IProfileRepository {
         const today = format(new Date(), 'yyyy-MM-dd')
 
         const result = await db.query.users.findFirst({
-            where: {
-                id: userId
-            },
+            where:
+                eq(users.id, userId),
             with: {
                 communities: {
                     limit: 3
