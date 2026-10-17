@@ -15,11 +15,10 @@ export interface IMeetiAttendeesRepository {
 class MeetiAttendeesRepository implements IMeetiAttendeesRepository {
     async isUserAttending(userId: string, meetiId: string): Promise<boolean> {
         const result = await db.query.meetiAttendees.findFirst({
-            where: {
-                AND: [
-                    {meetiId}, {userId}
-                ]
-            }
+            where: and(
+                eq(meetiAttendees.meetiId, meetiId),
+                eq(meetiAttendees.userId, userId)
+            )
         })
         return !!result
     }
@@ -50,9 +49,7 @@ class MeetiAttendeesRepository implements IMeetiAttendeesRepository {
 
     async findAttendeesByMeetiId(meetiId: string): Promise<SelectMeetiAttendeeWithUser[]> {
         const result = await db.query.meetiAttendees.findMany({
-            where: {
-                meetiId
-            },
+            where: eq(meetiAttendees.meetiId, meetiId),
             with: { 
                 user: {
                     columns: {

@@ -1,7 +1,7 @@
 import { db } from "@/src/db"
 import { CommunityWithMembersCount, InsertCommunity, SelectCommunity } from "../types/community.types"
 import { community, communityMembers } from "@/src/db/schema"
-import { desc, eq, sql } from "drizzle-orm"
+import { desc, eq, ilike, or, sql } from "drizzle-orm"
 import { CommunityInput } from "../schemas/communitySchema"
 
 
@@ -64,26 +64,16 @@ class CommunityRepository implements ICommunityRepository {
             .from(community)
             .orderBy(desc(membersCount))
             .limit(3)
-        console.log(result)
         return result
     }
 
     async search(query: string): Promise<SelectCommunity[]> {
+        const pattern = `%${query}%`
         return await db.query.community.findMany({
-            where: {
-                OR: [
-                    {
-                        name: {
-                            ilike: `%${query}%`
-                        }
-                    },
-                    {
-                        description: {
-                            ilike: `%${query}%`
-                        }
-                    }
-                ]
-            }
+            where: or(
+                ilike(community.name, pattern),
+                ilike(community.description, pattern)
+            )
         })
     }
 }

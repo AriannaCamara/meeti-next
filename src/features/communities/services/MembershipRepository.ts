@@ -1,6 +1,7 @@
 import { db } from "@/src/db"
 import { community, communityMembers } from "@/src/db/schema"
 import { and, count, eq } from "drizzle-orm"
+
 import { JoinedCommunity } from "../types/community.types"
 
 export interface IMembershipRepository {
@@ -43,9 +44,7 @@ class MembershipRepository implements IMembershipRepository {
     }
     async findJoinedCommunities(userId: string) {
         const result = await db.query.communityMembers.findMany({
-            where: {
-                userId
-            },
+            where: eq(communityMembers.userId, userId),
             with: {
                 community: true,
                 user: true

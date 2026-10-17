@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import { Form, FormError, FormInput, FormLabel, FormSubmit } from "@/shared/components/forms"
 import { useForm } from "react-hook-form"
@@ -13,17 +13,13 @@ export default function SetPasswordForm() {
     const searchParams = useSearchParams()
     const router = useRouter()
 
-    const [token, setToken] = useState<string | null>(null)
+    const token = searchParams.get("token")
 
     useEffect(() => {
-        const t = searchParams.get("token")
-
-        if (!t) {
+        if (!token) {
             router.push("/auth/forgot-password")
-        } else {
-            setToken(t)
         }
-    }, [searchParams, router])
+    }, [token, router])
 
     const { register, handleSubmit, formState: { errors } } =
         useForm<SetPasswordInput>({

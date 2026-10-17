@@ -2,7 +2,7 @@ import { meeti, meetiLocations } from "@/src/db/schema"
 import { FullMeeti, InsertMeeti, InsertMeetiLocation, SelectMeeti } from "../types/meeti.types"
 import { db } from "@/src/db"
 import { format } from "date-fns"
-import { eq, ilike } from "drizzle-orm"
+import { and, asc, eq, gt, gte, ilike, inArray, or, type SQL } from "drizzle-orm"
 
 
 export interface IMeetiRepository {
@@ -38,15 +38,11 @@ class MeetiRepository implements IMeetiRepository {
     async findUpcomingByUserId(userId: string): Promise<SelectMeeti[]> {
         const today = format(new Date(), 'yyyy-MM-dd')
         const result = await db.query.meeti.findMany({
-            where: {
-                AND: [
-                    {createdBy: {eq: userId}},
-                    {date: {gte: today}}
-                ]
-            },
-            orderBy: {
-                date: 'asc'
-            }
+            where: and(
+                eq(meeti.createdBy, userId),
+                gte(meeti.date, today)
+            ),
+            orderBy: [asc(meeti.date)]
         })
         return result
     }
@@ -57,21 +53,14 @@ class MeetiRepository implements IMeetiRepository {
         const nowTime = now.toTimeString().slice(0, 5)
 
         const result = await db.query.meeti.findMany({
-            where: {
-                OR: [
-                    {date: {gt: nowDate}},
-                    {
-                        AND: [
-                            {date: {eq: nowDate}},
-                            {time: {gte: nowTime}}
-                        ]
-                    }
-                ]
-            },
-            orderBy: {
-                date: 'asc',
-                time: 'asc'
-            },
+            where: or(
+                gt(meeti.date, nowDate),
+                and(
+                    eq(meeti.date, nowDate),
+                    gte(meeti.time, nowTime)
+                )
+            ),
+            orderBy: [asc(meeti.date), asc(meeti.time)],
             limit: 3
         })
         return result
@@ -79,9 +68,7 @@ class MeetiRepository implements IMeetiRepository {
 
     async findById(id: string) {
         const result = await db.query.meeti.findFirst({
-            where: {
-                id
-            },
+            where: eq(meeti.id, id),
             with: {
                 location: true
             }
@@ -91,9 +78,7 @@ class MeetiRepository implements IMeetiRepository {
 
     async findFullById(id: string) {
         const result = await db.query.meeti.findFirst({
-            where: {
-                id
-            },
+            where: eq(meeti.id, id),
             with: {
                 location: true,
                 category: true,
@@ -115,9 +100,7 @@ class MeetiRepository implements IMeetiRepository {
         if(!updatedMeeti.virtual && data.location) {
 
             const locationExists = await db.query.meetiLocations.findFirst({
-                where: {
-                    meetiId: updatedMeeti.id
-                }
+                where: eq(meetiLocations.meetiId, updatedMeeti.id)
             })
             if(locationExists) {
                 await db
@@ -134,31 +117,23 @@ class MeetiRepository implements IMeetiRepository {
         const today =  format(new Date(), 'yyyy-MM-dd')
 
         return db.query.meeti.findMany({
-            where: {
-                communityId,
-                date: {
-                    gte: today
-                }
-            },
+            where: and(
+                eq(meeti.communityId, communityId),
+                gte(meeti.date, today)
+            ),
             limit: 3,
-            orderBy: {
-                date: 'asc'
-            }
+            orderBy: [asc(meeti.date)]
         })
     }
 
     async findByCategory(categoryId: string): Promise<SelectMeeti[]> {
         const today = format(new Date(), 'yyyy-MM-dd')
         const result = await db.query.meeti.findMany({
-            where: {
-                categoryId,
-                date: {
-                    gte: today
-                }
-            },
-            orderBy: {
-                date: 'asc'
-            },
+            where: and(
+                eq(meeti.categoryId, categoryId),
+                gte(meeti.date, today)
+            ),
+            orderBy: [asc(meeti.date)],
             limit: 10
         })
         return result
@@ -169,13 +144,12 @@ class MeetiRepository implements IMeetiRepository {
     }
 
     async searchByTopic(query: string): Promise<SelectMeeti[]> {
+        const pattern = `%${query}%`
         const meetis = await db.query.meeti.findMany({
-            where: {
-                OR: [
-                    {title : {ilike: `%${query}%`}},
-                    {details : {ilike: `%${query}%`}}
-                ]
-            }
+            where: or(
+                ilike(meeti.title, pattern),
+                ilike(meeti.details, pattern)
+            )
         })
         return meetis
     }
@@ -191,26 +165,23 @@ class MeetiRepository implements IMeetiRepository {
         }
         const today = format(new Date(), 'yyyy-MM-dd')
 
+        const filters: SQL[] = [eq(meeti.virtual, true)]
+        if(isToday) filters.push(eq(meeti.date, today))
+        if(cleanQuery && cleanQuery.length > 0) {
+            const pattern = `%${cleanQuery}%`
+            const textFilter = or(
+                ilike(meeti.title, pattern),
+                ilike(meeti.details, pattern)
+            )
+            if(textFilter) filters.push(textFilter)
+        }
+
         const meetis = await db.query.meeti.findMany({
-            where: {
-                virtual: {eq: true},
-                ...(isToday && {
-                    date: {eq: today}
-                }),
-                ...(cleanQuery && cleanQuery.length > 0 && {
-                    OR: [
-                        {title: {ilike: `%${cleanQuery}%`}},
-                        {details: {ilike: `%${cleanQuery}%`}}
-                    ]
-                })
-            },
-            
+            where: and(...filters),
             limit: 5,
-            orderBy: {
-                date: 'asc'
-            }
+            orderBy: [asc(meeti.date)]
         })
-        return  meetis
+        return meetis
     }
 
     async searchByLocation(query?: string, city?: string, country?: string, today?: boolean): Promise<SelectMeeti[]> {
@@ -223,29 +194,36 @@ class MeetiRepository implements IMeetiRepository {
             cleanQuery = cleanQuery?.replace('hoy', '').trim()
         }
         const todayStr = format(new Date(), 'yyyy-MM-dd')
-        const meetis = await db.query.meetiLocations.findMany({
-            where: {
-               ...(isToday && { meeti : {date: {eq: todayStr}}}),
-               meeti: {virtual: false},
-                AND: [
-                    ...(cleanQuery ? [
-                        {
-                            OR: [
-                                {meeti: {title: {ilike: `%${cleanQuery}%`}}},
-                                {meeti: {details: {ilike: `%${cleanQuery}%`}}}
-                            ]
-                        }
-                    ] : []),
-                    ...(city ? [{city: {ilike: `%${city}%`}}] : []),
-                    ...(country ? [{country: {ilike: `%${country}%`}}] : [])
-                ]
-            },
-            limit: 5,
+
+        const meetiFilters: SQL[] = [eq(meeti.virtual, false)]
+        if(isToday) meetiFilters.push(eq(meeti.date, todayStr))
+        if(cleanQuery && cleanQuery.length > 0) {
+            const pattern = `%${cleanQuery}%`
+            const textFilter = or(
+                ilike(meeti.title, pattern),
+                ilike(meeti.details, pattern)
+            )
+            if(textFilter) meetiFilters.push(textFilter)
+        }
+
+        const meetiIds = db
+            .select({ id: meeti.id })
+            .from(meeti)
+            .where(and(...meetiFilters))
+            .as('meeti_ids')
+
+        const locationFilters: SQL[] = [inArray(meetiLocations.meetiId, meetiIds)]
+        if(city) locationFilters.push(ilike(meetiLocations.city, `%${city}%`))
+        if(country) locationFilters.push(ilike(meetiLocations.country, `%${country}%`))
+
+        const locations = await db.query.meetiLocations.findMany({
+            where: and(...locationFilters),
             with: {
                 meeti: true
-            }
+            },
+            limit: 5
         })
-        return meetis.map(meeti => meeti.meeti)
+        return locations.map(location => location.meeti)
     }
 }
 

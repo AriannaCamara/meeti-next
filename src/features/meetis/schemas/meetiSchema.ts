@@ -43,3 +43,5 @@ export const MeetiSchema = z.discriminatedUnion("virtual", [
 ])
 
 export type MeetiInput = z.infer<typeof MeetiSchema>
+// Tipo de entrada del formulario: availableSeats usa preprocess, su input es unknown
+export type MeetiFormInput = z.input<typeof MeetiSchema>

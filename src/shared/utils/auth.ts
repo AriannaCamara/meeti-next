@@ -10,7 +10,9 @@ export const checkPassword = async(password: string) => {
     if(!user) throw new Error('Usuario no autenticado')
     const accounts = await ctx.internalAdapter.findAccounts(user?.session.userId);
     const credentialAccount = accounts?.find((account) => account.providerId === "credential");
-    const hash = credentialAccount?.password!;
+    const hash = credentialAccount?.password;
+
+    if(!hash) return false
 
     return await ctx.password.verify({
         password,

@@ -1,7 +1,7 @@
 import { notifications } from "@/src/db/schema";
 import { InsertNotification, SelectNotification } from "../types/notification.types";
 import { db } from "@/src/db";
-import { and, count, eq } from "drizzle-orm";
+import { and, count, desc, eq } from "drizzle-orm";
 
 export interface INotificationRepository {
     create(data: InsertNotification) : Promise<SelectNotification>
@@ -31,14 +31,12 @@ class NotificationRepository implements INotificationRepository {
 
     async findByUserId(userId: string): Promise<SelectNotification[]> {
         const result = await db.query.notifications.findMany({
-            where: {
-                AND: [
-                    {userId: {eq: userId}},
-                    {read: {eq: false}}
-                ]
-            },
+            where: and(
+                eq(notifications.userId, userId),
+                eq(notifications.read, false)
+            ),
             limit: 10,
-            orderBy: {createdAt: 'desc'}
+            orderBy: [desc(notifications.createdAt)]
         })
         return result
     }

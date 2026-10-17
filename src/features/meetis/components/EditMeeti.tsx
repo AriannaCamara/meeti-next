@@ -3,7 +3,7 @@
 import { Form, FormSubmit } from "@/shared/components/forms";
 import MeetiForm from "./MeetiForm";
 import { FormProvider, useForm } from "react-hook-form";
-import { MeetiInput, MeetiSchema } from "../schemas/meetiSchema";
+import { MeetiFormInput, MeetiInput, MeetiSchema } from "../schemas/meetiSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SelectMeeti } from "../types/meeti.types";
 import { editMeetiAction } from "../actions/meeti-actions";
@@ -15,7 +15,7 @@ type Props = {
 }
 
 export default function EditMeeti({meeti} : Props) {
-    const methods = useForm<MeetiInput>({
+    const methods = useForm<MeetiFormInput, unknown, MeetiInput>({
         resolver: zodResolver(MeetiSchema),
         mode: 'all',
         defaultValues: meeti.virtual ? 
