@@ -22,6 +22,14 @@ export const accountRelations = relations(schema.accounts, ({ one }) => ({
   }),
 }));
 
+export const communityRelations = relations(schema.community, ({ one, many }) => ({
+  createdBy: one(schema.users, {
+    fields: [schema.community.createdBy],
+    references: [schema.users.id],
+  }),
+  members: many(schema.communityMembers),
+}));
+
 export const communityMemberRelations = relations(schema.communityMembers, ({ one }) => ({
   community: one(schema.community, {
     fields: [schema.communityMembers.communityId],
