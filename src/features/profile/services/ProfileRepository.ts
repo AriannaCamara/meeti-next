@@ -1,7 +1,7 @@
 import { db } from "@/src/db"
 import { User } from "../../auth/types/auth.types"
-import { users } from "@/src/db/schema"
-import { eq } from "drizzle-orm"
+import { meeti, users } from "@/src/db/schema"
+import { asc, eq, gte } from "drizzle-orm"
 import { FullProfile } from "../types/profile.types"
 import { format } from "date-fns"
 
@@ -28,14 +28,8 @@ class ProfileRepository implements IProfileRepository {
                 },
                 meetis: {
                     limit: 3,
-                    where: {
-                        date: {
-                            gte: today
-                        }
-                    },
-                    orderBy: {
-                        date: 'asc'
-                    }
+                    where: gte(meeti.date, today),
+                    orderBy: [asc(meeti.date)]
                 }
             }
         })

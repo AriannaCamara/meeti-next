@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
         system: `Eres un asistente de Meeti AI que ayuda a encontrar comunidades y meetis. SIEMPRE responde en español.
         Nunca respondas en inglés.
         Sé breve y natural.`,
-        model: openrouter('deepseek/deepseek-v4-flash:free'),
+        model: openrouter('deepseek/deepseek-v4-flash'),
         tools
     })
     return result.toUIMessageStreamResponse()
