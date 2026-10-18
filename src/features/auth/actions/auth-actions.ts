@@ -1,16 +1,15 @@
 "use server"
 
-import { rateLimit } from "@/lib/limiter"
+import { checkRateLimit } from "@/lib/limiter"
 import { ChangePasswordInput, ChangePasswordSchema, ForgotPasswordInput, ForgotPasswordSchema, SetPasswordInput, SetPasswordSchema, SignInInput, SignInSchema, SignUpInput, SignUpSchema } from "../schemas/authSchema"
 import { authService } from "../services/AuthService"
 import { getClientIp } from "@/shared/utils/ip"
 import { getMinutesDiffFromNow } from "@/shared/utils/date"
 import { requiereAuth } from "@/lib/auth-server"
-import { success } from "zod"
 
 export async function signUpAction(input : SignUpInput) {
     const ip = await getClientIp()
-    const {success, reset} = await rateLimit.limit(ip)
+    const {success, reset} = await checkRateLimit(ip)
 
     if(!success) {
         return {
@@ -33,7 +32,7 @@ export async function signUpAction(input : SignUpInput) {
 
 export async function signInAction(input: SignInInput) {
     const ip = await getClientIp()
-    const {success, reset} = await rateLimit.limit(ip)
+    const {success, reset} = await checkRateLimit(ip)
 
     if(!success) {
         return {
@@ -56,7 +55,7 @@ export async function signInAction(input: SignInInput) {
 export async function forgotPasswordAction(input: ForgotPasswordInput) {
 
     const ip = await getClientIp()
-    const {success, reset} = await rateLimit.limit(ip)
+    const {success, reset} = await checkRateLimit(ip)
 
     if(!success) {
         return {

@@ -3,12 +3,12 @@
 import { requiereAuth } from "@/lib/auth-server"
 import { meetiAttendeesServise } from "../services/MeetiAttendeesService"
 import { getClientIp } from "@/shared/utils/ip"
-import { rateLimit } from "@/lib/limiter"
+import { checkRateLimit } from "@/lib/limiter"
 import { getMinutesDiffFromNow } from "@/shared/utils/date"
 
 export async function toggleAttendace(meetiId: string, canConfirm: boolean) {
     const ip = await getClientIp()
-    const { success, limit, remaining, reset} = await rateLimit.limit(ip)
+    const { success, reset } = await checkRateLimit(ip)
     
     if(!success) {
         return {
