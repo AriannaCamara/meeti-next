@@ -29,7 +29,7 @@ export default function UploadImage({uploadedImageLabel}: Props) {
                 content={{
                     button: 'Subir Imagen',
                     label: "Elige un archivo o arrástralo aquí",
-                    allowedContent: "Máximo 1 imagen de 1MB"
+                    allowedContent: "Máximo 1 imagen de 8MB"
                 }}
                 config={{
                     mode: 'auto'

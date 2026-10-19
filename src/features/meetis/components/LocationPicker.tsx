@@ -1,17 +1,29 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from 'leaflet';
 import type { Marker as TMarker, LatLngTuple } from 'leaflet';
-import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, useMap, useMapEvents, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { FormError, FormInput, FormLabel } from '@/shared/components/forms';
 import { useFormContext } from 'react-hook-form';
 import { GeoCodeSchema, MeetiInput } from '../schemas/meetiSchema';
+import toast from 'react-hot-toast';
+
+const GEOCODE_URL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=pjson&langCode=ES&location=";
 
 function CenterMap({ coordinates }: { coordinates: LatLngTuple }) {
   const map = useMap()
   useEffect(() => {
     map.setView([coordinates[0], coordinates[1]]);
   }, [coordinates, map]);
+  return null;
+}
+
+function ClickHandler({ onPick }: { onPick: (coordinates: LatLngTuple) => void }) {
+  useMapEvents({
+    click({ latlng }) {
+      onPick([latlng.lat, latlng.lng]);
+    },
+  });
   return null;
 }
 
@@ -33,33 +45,36 @@ export default function LocationPicker() {
 
   const markerRef = useRef<TMarker>(null);
   const ZOOM = 16;
-  const GEOCODE_URL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=pjson&langCode=ES&location=";
 
-  const reverseGeocoding = async (positionTuple: LatLngTuple) => {
-    const url = GEOCODE_URL + `${positionTuple[1]},${positionTuple[0]}`
-    const data = await (await fetch(url)).json();
-    const location = GeoCodeSchema.parse(data.address)
+  const pickLocation = useCallback(async (positionTuple: LatLngTuple) => {
+    setCoordinates(positionTuple);
 
-    setValue('location.address', location.LongLabel)
-    setValue('location.city', location.City)
-    setValue('location.country', location.CountryCode)
-    setValue('location.lat', location.InputY)
-    setValue('location.lng', location.InputX)
-    
-    clearErrors('location.address')
-  }
+    try {
+      const url = GEOCODE_URL + `${positionTuple[1]},${positionTuple[0]}`
+      const data = await (await fetch(url)).json();
+      const location = GeoCodeSchema.parse(data.address)
+
+      setValue('location.address', location.LongLabel)
+      setValue('location.city', location.City)
+      setValue('location.country', location.CountryCode)
+      setValue('location.lat', location.InputY)
+      setValue('location.lng', location.InputX)
+
+      clearErrors('location.address')
+    } catch {
+      toast.error('No se pudo obtener la dirección de esa ubicación')
+    }
+  }, [setValue, clearErrors])
 
   const eventHandlers = useMemo(() => ({
     dragend() {
       const marker = markerRef.current;
       if (marker !== null) {
         const latLng = marker.getLatLng();
-        const positionTuple: LatLngTuple = [latLng.lat, latLng.lng];
-        setCoordinates(positionTuple);
-        reverseGeocoding(positionTuple)
+        pickLocation([latLng.lat, latLng.lng]);
       }
     },
-  }), [reverseGeocoding]);
+  }), [pickLocation]);
 
   return (
     <>
@@ -78,6 +93,7 @@ export default function LocationPicker() {
           <Popup>Dirección aquí</Popup>
         </Marker>
 
+        <ClickHandler onPick={pickLocation} />
         <CenterMap coordinates={coordinates} />
       </MapContainer>
 
@@ -86,8 +102,6 @@ export default function LocationPicker() {
         id="address"
         type="text"
         placeholder="Dirección Evento"
-        className="disabled:opacity-50 "
-        disabled
         {...register('location.address')}
       />
 
