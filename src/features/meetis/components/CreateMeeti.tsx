@@ -60,10 +60,14 @@ export default function CreateMeeti() {
 
   const { isSubmitting } = methods.formState
 
+  const onInvalid = () => {
+    toast.error('Revisa los campos marcados del formulario')
+  }
+
   return (
     <FormProvider {...methods}>
       <Form
-        onSubmit={methods.handleSubmit(onSubmit)} noValidate
+        onSubmit={methods.handleSubmit(onSubmit, onInvalid)} noValidate
       >
         <MeetiForm />
         <FormSubmit

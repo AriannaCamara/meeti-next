@@ -49,9 +49,13 @@ export default function EditMeeti({meeti} : Props) {
 
     const { isSubmitting } = methods.formState
 
+    const onInvalid = () => {
+        toast.error('Revisa los campos marcados del formulario')
+    }
+
   return (
     <FormProvider {...methods}>
-    <Form onSubmit={methods.handleSubmit(onSubmit)} >
+    <Form onSubmit={methods.handleSubmit(onSubmit, onInvalid)} >
         <MeetiForm />
         <FormSubmit
             value={isSubmitting ? 'Guardando...' : 'Actualizar'}

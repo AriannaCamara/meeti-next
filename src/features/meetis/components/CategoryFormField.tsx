@@ -15,9 +15,9 @@ function CategoryOptions() {
 
     return (
         <>
-            <FormLabel>Categoría Meeti</FormLabel>
+            <FormLabel htmlFor="categoryId">Categoría Meeti</FormLabel>
 
-            <FormSelect {...register('categoryId')}>
+            <FormSelect id="categoryId" {...register('categoryId')}>
                 <option value="">Selecciona Categoría</option>
 
                 {categories.map(category => (

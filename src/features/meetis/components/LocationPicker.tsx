@@ -3,7 +3,6 @@ import { Icon } from 'leaflet';
 import type { Marker as TMarker, LatLngTuple } from 'leaflet';
 import { MapContainer, TileLayer, useMap, useMapEvents, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { FormError, FormInput, FormLabel } from '@/shared/components/forms';
 import { useFormContext } from 'react-hook-form';
 import { GeoCodeSchema, MeetiInput } from '../schemas/meetiSchema';
 import toast from 'react-hot-toast';
@@ -36,7 +35,7 @@ const markerIcon = new Icon({
 
 export default function LocationPicker() {
 
-  const {register, getValues, setValue, formState: {errors} } = useFormContext<MeetiInput>()
+  const { getValues, setValue } = useFormContext<MeetiInput>()
 
   const lat = getValues('location.lat') ?? 40.415339
   const lng = getValues('location.lng') ?? -3.707916
@@ -60,7 +59,9 @@ export default function LocationPicker() {
       setValue('location.lat', location.InputY, { shouldValidate: true })
       setValue('location.lng', location.InputX, { shouldValidate: true })
     } catch {
-      toast.error('No se pudo obtener la dirección de esa ubicación')
+      setValue('location.lat', positionTuple[0], { shouldValidate: true })
+      setValue('location.lng', positionTuple[1], { shouldValidate: true })
+      toast.error('No se pudo obtener la dirección. Rellena ciudad y país a mano.')
     }
   }, [setValue])
 
@@ -75,59 +76,23 @@ export default function LocationPicker() {
   }), [pickLocation]);
 
   return (
-    <>
-      <MapContainer center={coordinates} zoom={ZOOM} scrollWheelZoom={true} className='h-96 w-full'>
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <Marker
-          draggable={true}
-          position={coordinates}
-          icon={markerIcon}
-          eventHandlers={eventHandlers}
-          ref={markerRef}
-        >
-          <Popup>Dirección aquí</Popup>
-        </Marker>
-
-        <ClickHandler onPick={pickLocation} />
-        <CenterMap coordinates={coordinates} />
-      </MapContainer>
-
-      <FormLabel htmlFor="address">Dirección:</FormLabel>
-      <FormInput
-        id="address"
-        type="text"
-        placeholder="Dirección Evento"
-        {...register('location.address')}
+    <MapContainer center={coordinates} zoom={ZOOM} scrollWheelZoom={true} className='h-96 w-full'>
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {'location' in errors && errors.location?.address && (
-        <FormError>{errors.location.address.message}</FormError>
-      )}
+      <Marker
+        draggable={true}
+        position={coordinates}
+        icon={markerIcon}
+        eventHandlers={eventHandlers}
+        ref={markerRef}
+      >
+        <Popup>Dirección aquí</Popup>
+      </Marker>
 
-      <FormLabel htmlFor="city">Ciudad:</FormLabel>
-      <FormInput
-        id="city"
-        type="text"
-        placeholder="Ciudad"
-        {...register('location.city')}
-      />
-      {'location' in errors && errors.location?.city && (
-        <FormError>{errors.location.city.message}</FormError>
-      )}
-
-      <FormLabel htmlFor="country">País:</FormLabel>
-      <FormInput
-        id="country"
-        type="text"
-        placeholder="País"
-        {...register('location.country')}
-      />
-      {'location' in errors && errors.location?.country && (
-        <FormError>{errors.location.country.message}</FormError>
-      )}
-
-    </>
+      <ClickHandler onPick={pickLocation} />
+      <CenterMap coordinates={coordinates} />
+    </MapContainer>
   )
 }

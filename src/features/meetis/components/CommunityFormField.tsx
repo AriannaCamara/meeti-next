@@ -12,9 +12,10 @@ function CommunityOptions() {
     
     return ( 
         <>
-            <FormLabel>Comunidad Meeti</FormLabel>
+            <FormLabel htmlFor="communityId">Comunidad Meeti</FormLabel>
 
             <FormSelect
+                id="communityId"
                 {...register('communityId')}
             >
                 <option value="">Selecciona Comunidad</option>

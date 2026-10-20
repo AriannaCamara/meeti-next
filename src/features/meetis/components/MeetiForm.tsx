@@ -1,3 +1,5 @@
+"use client"
+
 import { FormError, FormInput, FormLabel, FormTextarea, FormToggle } from "@/shared/components/forms";
 import CommunityFormField from "./CommunityFormField";
 import CategoryFormField from "./CategoryFormField";
@@ -6,7 +8,10 @@ import { useFormContext } from "react-hook-form";
 import { MeetiInput } from "../schemas/meetiSchema";
 import UploadImage from "@/shared/components/upload/UploadImage";
 
-const DynamicLocationPicker = dynamic(() => import('./LocationPicker'), {ssr: false})
+const DynamicLocationPicker = dynamic(() => import('./LocationPicker'), {
+  ssr: false,
+  loading: () => <p className="text-sm text-gray-500">Cargando mapa...</p>
+})
 
 export default function MeetiForm() {
 
@@ -36,12 +41,12 @@ export default function MeetiForm() {
         {errors.details && <FormError>{errors.details.message}</FormError>}
 
         <FormLabel>Imagen de Meeti</FormLabel>
-        <UploadImage 
+        <UploadImage
           uploadedImageLabel="Imagen Publicada Meeti:"
         />
 
         <CategoryFormField />
-        
+
         <CommunityFormField />
 
         <FormLabel htmlFor="availableSeats">Cupo</FormLabel>
@@ -78,7 +83,8 @@ export default function MeetiForm() {
         </div>
 
         <FormLabel htmlFor="virtual">¿Evento Virtual?</FormLabel>
-        <FormToggle 
+        <FormToggle
+          id="virtual"
           checked={isVirtual}
           onChange={(e) => {
             setValue('virtual', e.target.checked)
@@ -93,7 +99,7 @@ export default function MeetiForm() {
           Ubicación Meeti
         </legend>
 
-        <FormLabel id="place_name">Nombre Lugar:</FormLabel>
+        <FormLabel htmlFor="place_name">Nombre Lugar:</FormLabel>
         <FormInput
           id="place_name"
           type="text"
@@ -104,7 +110,41 @@ export default function MeetiForm() {
           <FormError>{errors.location.placeName.message}</FormError>
         )}
 
-        <DynamicLocationPicker /> 
+        <FormLabel htmlFor="address">Dirección:</FormLabel>
+        <FormInput
+          id="address"
+          type="text"
+          placeholder="Dirección Evento"
+          {...register('location.address')}
+        />
+        {'location' in errors && errors.location?.address && (
+          <FormError>{errors.location.address.message}</FormError>
+        )}
+
+        <FormLabel htmlFor="city">Ciudad:</FormLabel>
+        <FormInput
+          id="city"
+          type="text"
+          placeholder="Ciudad"
+          {...register('location.city')}
+        />
+        {'location' in errors && errors.location?.city && (
+          <FormError>{errors.location.city.message}</FormError>
+        )}
+
+        <FormLabel htmlFor="country">País:</FormLabel>
+        <FormInput
+          id="country"
+          type="text"
+          placeholder="País"
+          {...register('location.country')}
+        />
+        {'location' in errors && errors.location?.country && (
+          <FormError>{errors.location.country.message}</FormError>
+        )}
+
+        <p className="text-sm text-gray-500">Haz clic en el mapa para autocompletar la dirección (opcional):</p>
+        <DynamicLocationPicker />
 
       </fieldset>
       )}
