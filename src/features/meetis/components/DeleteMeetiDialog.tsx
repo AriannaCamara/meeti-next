@@ -5,9 +5,10 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { useMeetiStore } from '../stores/meeti.store'
 import { deleteMeetiAction } from '../actions/meeti-actions'
 import toast from 'react-hot-toast'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 export default function DeleteMeetiDialog() {
+    const router = useRouter()
     const {open, setOpen, meeti, setMeeti} = useMeetiStore()
     if(!meeti) return null
 
@@ -19,7 +20,7 @@ export default function DeleteMeetiDialog() {
             setMeeti(null)
             setOpen(false)
             setTimeout(() => {
-                redirect('/dashboard/meetis')
+                router.push('/dashboard/meetis')
             }, 1000)
         }
     }

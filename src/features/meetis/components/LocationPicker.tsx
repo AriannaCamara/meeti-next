@@ -36,7 +36,7 @@ const markerIcon = new Icon({
 
 export default function LocationPicker() {
 
-  const {register, getValues, setValue, formState: {errors}, clearErrors } = useFormContext<MeetiInput>()
+  const {register, getValues, setValue, formState: {errors} } = useFormContext<MeetiInput>()
 
   const lat = getValues('location.lat') ?? 40.415339
   const lng = getValues('location.lng') ?? -3.707916
@@ -54,17 +54,15 @@ export default function LocationPicker() {
       const data = await (await fetch(url)).json();
       const location = GeoCodeSchema.parse(data.address)
 
-      setValue('location.address', location.LongLabel)
-      setValue('location.city', location.City)
-      setValue('location.country', location.CountryCode)
-      setValue('location.lat', location.InputY)
-      setValue('location.lng', location.InputX)
-
-      clearErrors('location.address')
+      setValue('location.address', location.LongLabel, { shouldValidate: true })
+      setValue('location.city', location.City, { shouldValidate: true })
+      setValue('location.country', location.CountryCode, { shouldValidate: true })
+      setValue('location.lat', location.InputY, { shouldValidate: true })
+      setValue('location.lng', location.InputX, { shouldValidate: true })
     } catch {
       toast.error('No se pudo obtener la dirección de esa ubicación')
     }
-  }, [setValue, clearErrors])
+  }, [setValue])
 
   const eventHandlers = useMemo(() => ({
     dragend() {
@@ -104,10 +102,31 @@ export default function LocationPicker() {
         placeholder="Dirección Evento"
         {...register('location.address')}
       />
-
-    {'location' in errors && errors.location?.address && (
+      {'location' in errors && errors.location?.address && (
         <FormError>{errors.location.address.message}</FormError>
-    )}
+      )}
+
+      <FormLabel htmlFor="city">Ciudad:</FormLabel>
+      <FormInput
+        id="city"
+        type="text"
+        placeholder="Ciudad"
+        {...register('location.city')}
+      />
+      {'location' in errors && errors.location?.city && (
+        <FormError>{errors.location.city.message}</FormError>
+      )}
+
+      <FormLabel htmlFor="country">País:</FormLabel>
+      <FormInput
+        id="country"
+        type="text"
+        placeholder="País"
+        {...register('location.country')}
+      />
+      {'location' in errors && errors.location?.country && (
+        <FormError>{errors.location.country.message}</FormError>
+      )}
 
     </>
   )

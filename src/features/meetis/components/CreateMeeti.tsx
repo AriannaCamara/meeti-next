@@ -8,9 +8,11 @@ import { MeetiFormInput, MeetiInput, MeetiSchema } from "../schemas/meetiSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createMeetiAction } from "../actions/meeti-actions"
 import toast from "react-hot-toast"
-import { redirect } from "next/navigation"
+import { useRouter } from "next/navigation"
 
 export default function CreateMeeti() {
+
+    const router = useRouter()
 
     const methods = useForm<MeetiFormInput, unknown, MeetiInput>({
     resolver: zodResolver(MeetiSchema),
@@ -40,15 +42,23 @@ export default function CreateMeeti() {
   if(isPending) return 'Cargando...'
 
   const onSubmit = async (data: MeetiInput) => {
-   const {error, success} = await createMeetiAction(data)
-    if(error) {
-      toast.error(error)
-    }
-    if(success) {
-      toast.success(success)
-      redirect('/dashboard/meetis')
+    try {
+      const {error, success} = await createMeetiAction(data)
+      if(error) {
+        toast.error(error)
+        return
+      }
+      if(success) {
+        toast.success(success)
+        router.push('/dashboard/meetis')
+      }
+    } catch (err) {
+      console.error(err)
+      toast.error('Error inesperado al crear el Meeti')
     }
   }
+
+  const { isSubmitting } = methods.formState
 
   return (
     <FormProvider {...methods}>
@@ -56,7 +66,10 @@ export default function CreateMeeti() {
         onSubmit={methods.handleSubmit(onSubmit)} noValidate
       >
         <MeetiForm />
-        <FormSubmit value={'Crear Meeti'} />
+        <FormSubmit
+          value={isSubmitting ? 'Creando...' : 'Crear Meeti'}
+          disabled={isSubmitting}
+        />
       </Form>
     </FormProvider>
     

@@ -16,11 +16,20 @@ export async function createMeetiAction(input: MeetiInput) {
     const data = MeetiSchema.safeParse(input)
     if(!data.success) {
         return {
-            error: 'Hubo un error',
+            error: 'Datos Inválidos',
             success: ''
         }
     }
-    await meetiService.createMeeti(data.data, session.user)
+
+    try {
+        await meetiService.createMeeti(data.data, session.user)
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Error al crear el Meeti'
+        return {
+            error: message,
+            success: ''
+        }
+    }
 
     return {
         success: 'Meeti Creado Correctamente',
@@ -40,11 +49,20 @@ export async function editMeetiAction(input: MeetiInput, meetiId: string) {
     const data = MeetiSchema.safeParse(input)
     if(!data.success) {
         return {
-            error: 'Hubo un error',
+            error: 'Datos Inválidos',
             success: ''
         }
     }
-    await  meetiService.updateMeeti(meetiId, data.data, session.user)
+
+    try {
+        await meetiService.updateMeeti(meetiId, data.data, session.user)
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Error al actualizar el Meeti'
+        return {
+            error: message,
+            success: ''
+        }
+    }
 
     return {
         error: '',
@@ -60,6 +78,14 @@ export async function deleteMeetiAction(meetiId: string) {
             success: ''
         }
     }
-    const response = await meetiService.deleteMeeti(meetiId, session.user)
-    return response 
+    try {
+        const response = await meetiService.deleteMeeti(meetiId, session.user)
+        return response
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Error al eliminar el Meeti'
+        return {
+            error: message,
+            success: ''
+        }
+    }
 }

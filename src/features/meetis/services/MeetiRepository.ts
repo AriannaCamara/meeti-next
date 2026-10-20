@@ -21,12 +21,14 @@ export interface IMeetiRepository {
 }
 class MeetiRepository implements IMeetiRepository {
     async insert(data: InsertMeeti): Promise<void> {
-        const [insertedMeeti] = await db.insert(meeti).values(data).returning()
-        
-        if(!insertedMeeti.virtual && data.location) {
+        // location no es columna de la tabla meetis, se inserta aparte
+        const { location, ...meetiData } = data
+        const [insertedMeeti] = await db.insert(meeti).values(meetiData).returning()
+
+        if(!insertedMeeti.virtual && location) {
             await this.insertLocation({
                 meetiId: insertedMeeti.id,
-                ...data.location
+                ...location
             })
         }
     }
@@ -90,14 +92,16 @@ class MeetiRepository implements IMeetiRepository {
     }
 
     async update(data: InsertMeeti, meetiId: string): Promise<void> {
+        // location no es columna de la tabla meetis, se actualiza aparte
+        const { location, ...meetiData } = data
         const[updatedMeeti] =  await db
             .update(meeti)
-            .set(data)
+            .set(meetiData)
             .where(eq(meeti.id, meetiId))
             .returning()
 
         // Actualizar ubicacion si el evento es presencial 
-        if(!updatedMeeti.virtual && data.location) {
+        if(!updatedMeeti.virtual && location) {
 
             const locationExists = await db.query.meetiLocations.findFirst({
                 where: eq(meetiLocations.meetiId, updatedMeeti.id)
@@ -105,10 +109,10 @@ class MeetiRepository implements IMeetiRepository {
             if(locationExists) {
                 await db
                 .update(meetiLocations)
-                .set(data.location)
+                .set(location)
                 .where(eq(meetiLocations.meetiId, updatedMeeti.id))
             } else {
-                await this.insertLocation({ meetiId: updatedMeeti.id, ...data.location })
+                await this.insertLocation({ meetiId: updatedMeeti.id, ...location })
             }
         }
     }
