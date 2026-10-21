@@ -27,7 +27,7 @@ export default function ChangePasswordForm() {
 
   return (
     <>
-        <Heading level={2} className="mt-10 bg-linear-to-r mb-10 from-cyan-500 to-cyan-800 bg-clip-text text-transparent">
+        <Heading level={2} className="mt-10 bg-linear-to-r mb-10 from-cyan-500 to-cyan-800 dark:to-cyan-600 bg-clip-text text-transparent">
           Cambiar Password
         </Heading>
 

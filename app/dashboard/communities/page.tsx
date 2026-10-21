@@ -12,7 +12,7 @@ export const metadata : Metadata = {
 export default function CommunitiesPage() {
   return (
     <>
-        <Heading className="mb-10 bg-linear-to-r from-cyan-500 to-cyan-800 text-center bg-clip-text text-transparent">Administra Tus Comunidades</Heading>
+        <Heading className="mb-10 bg-linear-to-r from-cyan-500 to-cyan-800 dark:to-cyan-600 text-center bg-clip-text text-transparent">Administra Tus Comunidades</Heading>
             <div className="flex justify-between flex-col lg:flex-row">
             <Link
                 href="/dashboard/communities/create" 

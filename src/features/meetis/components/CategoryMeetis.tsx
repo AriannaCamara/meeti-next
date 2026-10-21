@@ -16,7 +16,7 @@ export default async function CategoryMeetis({categoryId} : Props) {
                     {meetis.map(meeti => <MeetiCard key={meeti.id} meeti={meeti} />)}
                 </div>
             ) : (
-                <p className="text-center mt-10 text-lg text-gray-600">
+                <p className="text-center mt-10 text-lg text-gray-600 dark:text-gray-300">
                     No hay próximos Meetis en esta categoría.
                 </p>
             )}

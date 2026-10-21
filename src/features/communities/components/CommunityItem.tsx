@@ -30,8 +30,8 @@ export default function CommunityItem({community}: Props) {
             className="hover:underline font-bold text-lg text-orange-500">
             {name}
           </Link>
-          <p className="text-gray-600 text-sm line-clamp-2">{description}</p>
-          <p className="text-gray-600 mt-3 text-sm">{community.memberCount} {pluralize('Seguidor', community.memberCount)}</p>
+          <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-2">{description}</p>
+          <p className="text-gray-600 dark:text-gray-300 mt-3 text-sm">{community.memberCount} {pluralize('Seguidor', community.memberCount)}</p>
         </div>
       </div>
       <div className="flex shrink-0 items-center gap-x-6">

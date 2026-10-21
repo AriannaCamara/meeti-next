@@ -10,7 +10,7 @@ type Props = {
 
 export default function MeetiCard({meeti}: Props) {
   return (
-    <div className="border border-slate-200 hover:shadow-lg transition-shadow rounded-xl">
+    <div className="border border-slate-200 dark:border-white/10 hover:shadow-lg transition-shadow rounded-xl">
       <div className="overflow-hidden">
         <Image
             src={meeti.image}
@@ -21,10 +21,10 @@ export default function MeetiCard({meeti}: Props) {
         />
       </div>
       <div className="p-5 space-y-5">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-600 dark:text-gray-400">
             {displayDate(meeti.date)}
         </p>
-        <Heading level={3} className="text-2xl font-bold h:32 text-center text-cyan-700">
+        <Heading level={3} className="text-2xl font-bold h:32 text-center text-cyan-700 dark:text-cyan-400">
             {meeti.title}
         </Heading>
         <div className="flex items-center gap-5">

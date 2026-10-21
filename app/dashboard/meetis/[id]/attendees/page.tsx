@@ -23,15 +23,15 @@ export default async function MeetiAttendeesPage({params}: PageProps<'/dashboard
   
     return (
     <>
-        <Heading className="font-black uppercase text-4xl bg-linear-to-r mb-10 from-cyan-500 to-cyan-800 text-center bg-clip-text text-transparent">Asistentes al Meeti: {meeti.title}</Heading>
+        <Heading className="font-black uppercase text-4xl bg-linear-to-r mb-10 from-cyan-500 to-cyan-800 dark:to-cyan-600 text-center bg-clip-text text-transparent">Asistentes al Meeti: {meeti.title}</Heading>
         
         <div className="mx-auto max-w-2xl mt-10">
             {attendees.length ? (
-                <ul role="list" className="divide-y divide-gray-100 dark:divide-white/5 mt-10 shadow-lg p-10">
+                <ul role="list" className="divide-y divide-gray-100 dark:divide-white/5 mt-10 shadow-lg p-10 bg-white dark:bg-gray-900 rounded-xl">
                 {attendees.map(({user}) => (
                     <li className="p-5" key={user.id}>
                     <p className="font-bold text-lg">{user.name}</p>
-                    <p className="text-gray-600 text-sm">{user.email}</p>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">{user.email}</p>
                     </li>
                 ))}
                 </ul>

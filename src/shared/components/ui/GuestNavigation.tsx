@@ -7,7 +7,7 @@ export default function GuestNavigation() {
       <AILink />
       
       <Link 
-        className="font-semibold text-lg text-cyan-700 hover:text-pink-600 transition-colors"
+        className="font-semibold text-lg text-cyan-700 hover:text-pink-600 dark:text-cyan-400 dark:hover:text-pink-400 transition-colors"
         href="/auth/login"
       >
         Iniciar Sesión

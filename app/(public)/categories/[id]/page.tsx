@@ -25,7 +25,7 @@ export default async function CategoryPage({params}: PageProps<'/categories/[id]
 
     return (
       <main className="max-w-7xl mx-auto px-5 lg:px-0 py-10">
-        <Heading className="bg-linear-to-r from-cyan-500 to-cyan-800 text-center bg-clip-text text-transparent">Meetis en la categoría: {category.name}</Heading>
+        <Heading className="bg-linear-to-r from-cyan-500 to-cyan-800 dark:to-cyan-600 text-center bg-clip-text text-transparent">Meetis en la categoría: {category.name}</Heading>
         <CategoryMeetis categoryId={category.id} />
       </main>
     )

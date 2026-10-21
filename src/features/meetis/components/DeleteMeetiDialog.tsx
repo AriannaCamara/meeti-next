@@ -48,7 +48,7 @@ export default function DeleteMeetiDialog() {
                                         Eliminar Meeti: {meeti.title}
                                     </DialogTitle>
                                     <div className="mt-2">
-                                        <p className="text-gray-600">
+                                        <p className="text-gray-600 dark:text-gray-300">
                                             ¿Confirmas que deseas eliminar este Meeti? Un Meeti Eliminado no se puede recuperar
                                         </p>
 

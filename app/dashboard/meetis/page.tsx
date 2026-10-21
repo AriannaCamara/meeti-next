@@ -24,7 +24,7 @@ export default async function MeetiPage() {
 
   return (
     <>
-        <Heading className="bg-linear-to-r mb-10 from-cyan-500 to-cyan-800 text-center bg-clip-text text-transparent">{title}</Heading>
+        <Heading className="bg-linear-to-r mb-10 from-cyan-500 to-cyan-800 dark:to-cyan-600 text-center bg-clip-text text-transparent">{title}</Heading>
 
         <Link
             href="/dashboard/meetis/create" 
@@ -33,7 +33,7 @@ export default async function MeetiPage() {
 
         {meetis.length ? (
 
-        <ul role="list" className="divide-y divide-gray-100 dark:divide-white/5 mt-10 shadow-lg p-10">
+        <ul role="list" className="divide-y divide-gray-100 dark:divide-white/5 mt-10 shadow-lg p-10 bg-white dark:bg-gray-900 rounded-xl">
             
             {meetis.map(meeti => {
               const {id, title, image, date, time} = meeti.data
@@ -57,10 +57,10 @@ export default async function MeetiPage() {
                       >
                           {title}
                       </Link>
-                      <p className="text-gray-600 text-sm">
+                      <p className="text-gray-600 dark:text-gray-300 text-sm">
                         {formatMeeiDate(date, time)}
                       </p>
-                      <p className="text-gray-600 text-sm">
+                      <p className="text-gray-600 dark:text-gray-300 text-sm">
                         {meeti.attendanceCount} {pluralize('Asistente', meeti.attendanceCount)}
                       </p>
                     </div>

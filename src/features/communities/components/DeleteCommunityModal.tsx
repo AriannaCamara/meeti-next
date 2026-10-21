@@ -37,7 +37,7 @@ export default function DeleteCommunityModal() {
                     Eliminar Comunidad: {community?.name}
                   </DialogTitle>
                   <div className="mt-2">
-                    <p className="text-gray-600  ">
+                    <p className="text-gray-600 dark:text-gray-300  ">
                       ¿Confirmas que deseas eliminar la Comunidad? Una comunidad eliminada no se puede recuperar.
                     </p>
 

@@ -18,7 +18,7 @@ export default async function SecurityPage() {
 
   return (
     <>
-        <Heading className="bg-linear-to-r mb-10 from-cyan-500 to-cyan-800 text-center bg-clip-text text-transparent">{title}</Heading> 
+        <Heading className="bg-linear-to-r mb-10 from-cyan-500 to-cyan-800 dark:to-cyan-600 text-center bg-clip-text text-transparent">{title}</Heading> 
         <ChangePasswordForm />
         <ActiveSessionsList />
     </>

@@ -27,7 +27,7 @@ export default async function EditCommunityPage(props: PageProps<'/dashboard/com
 
     return (
     <>
-        <Heading className="mb-10 bg-linear-to-r from-cyan-500 to-cyan-800 text-center bg-clip-text text-transparent">Editar Comunidad: <span className="text-orange-500">{community.data.name}</span> </Heading>
+        <Heading className="mb-10 bg-linear-to-r from-cyan-500 to-cyan-800 dark:to-cyan-600 text-center bg-clip-text text-transparent">Editar Comunidad: <span className="text-orange-500">{community.data.name}</span> </Heading>
         
         <Link
             href="/dashboard/communities" 

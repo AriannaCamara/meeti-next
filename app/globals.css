@@ -5,3 +5,14 @@
 @utility bg-hero {
     background-image: url('/hero.jpg')
 }
+
+@layer base {
+    /* El navegador sabe que la página soporta ambos esquemas (fondos/controles UA en dark) */
+    html {
+        color-scheme: light dark;
+    }
+
+    body {
+        @apply bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100;
+    }
+}

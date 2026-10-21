@@ -13,7 +13,7 @@ export default async  function UpcomingCommunityMeetis({communityId}: Props) {
 
     return (
         <section className="max-w-7xl mx-auto py-10">
-            <Heading level={2} className="font-black uppercase text-4xl bg-linear-to-r mb-10 from-cyan-500 to-cyan-800 text-center bg-clip-text text-transparent">
+            <Heading level={2} className="font-black uppercase text-4xl bg-linear-to-r mb-10 from-cyan-500 to-cyan-800 dark:to-cyan-600 text-center bg-clip-text text-transparent">
                 Próximos Meetis de esta Comunidad
             </Heading>
             <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-5 p-5 lg:p-0">
@@ -21,7 +21,7 @@ export default async  function UpcomingCommunityMeetis({communityId}: Props) {
                     <MeetiCard key={meeti.id} meeti={meeti} />
                 ))
                 
-            :  <p className="text-center py-10  text-lg text-gray-600 col-span-1 lg:col-span-3">No Hay Próximos Meetis en esta comunidad</p> }
+            :  <p className="text-center py-10  text-lg text-gray-600 dark:text-gray-300 col-span-1 lg:col-span-3">No Hay Próximos Meetis en esta comunidad</p> }
                
             </div>
         </section>

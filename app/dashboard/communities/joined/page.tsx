@@ -19,13 +19,13 @@ export default async function JoinedCommunitiesPage() {
 
   return (
     <>
-        <Heading className="mb-10 bg-linear-to-r from-cyan-600 to-cyan-800 text-center bg-clip-text text-transparent">Comunidades a las que te uniste</Heading>
+        <Heading className="mb-10 bg-linear-to-r from-cyan-600 to-cyan-800 dark:to-cyan-600 text-center bg-clip-text text-transparent">Comunidades a las que te uniste</Heading>
             <Link
                 href="/dashboard/communities" 
                 className="mt-5 block lg:inline-block text-center bg-cyan-600 hover:bg-cyan-700 transition-colors text-xs lg:text-xl text-white py-2 px-5  font-bold rounded-full"
             >Volver a mis Comunidades</Link>
         {communities.length ? (
-          <ul role="list" className="divide-y divide-gray-100 mt-10 shadow-lg p-10">
+          <ul role="list" className="divide-y divide-gray-100 mt-10 shadow-lg p-10 bg-white dark:bg-gray-900 rounded-xl">
             {communities.map(community => (
               <CommunityItem key={community.data.id} community={community} />
             ))}

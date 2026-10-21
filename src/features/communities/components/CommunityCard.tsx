@@ -26,7 +26,7 @@ export default function CommunityCard({community, target = false}: Props) {
       </div>
       <div className="p-5 space-y-3">
         <p className="line-clamp-3">{community.description}</p>
-          {community.membersCount && <p className="text-gray-600 text-sm">{community.membersCount} {pluralize('Miembro', +community.membersCount)}</p>}
+          {community.membersCount && <p className="text-gray-600 dark:text-gray-300 text-sm">{community.membersCount} {pluralize('Miembro', +community.membersCount)}</p>}
         <Heading level={3} className="font-bold text-2xl text-cyan-700 text-center line-clamp-1">{community.name}</Heading>
         <Link
             href={`/communities/${community.id}`}

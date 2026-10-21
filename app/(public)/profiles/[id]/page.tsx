@@ -46,7 +46,7 @@ export default async function ProfilePage({params}: PageProps<'/profiles/[id]'>)
     if(!profile) return notFound()
 
     return (
-        //<Heading className="mb-10 mt-10 bg-linear-to-r from-cyan-500 to-cyan-800 text-center bg-clip-text text-transparent">Perfil</Heading>
+        //<Heading className="mb-10 mt-10 bg-linear-to-r from-cyan-500 to-cyan-800 dark:to-cyan-600 text-center bg-clip-text text-transparent">Perfil</Heading>
         <>
              <main className="max-w-7xl mx-auto mt-10 space-y-5 px-5 lg:p-0 ">
                 <div className="space-y-7 mt-10">
@@ -61,15 +61,15 @@ export default async function ProfilePage({params}: PageProps<'/profiles/[id]'>)
                     />
                 </div>
 
-                <Heading level={2} className="bg-linear-to-r from-cyan-500 to-cyan-800 text-center bg-clip-text text-transparent">{profile.name}</Heading>
+                <Heading level={2} className="bg-linear-to-r from-cyan-500 to-cyan-800 dark:to-cyan-600 text-center bg-clip-text text-transparent">{profile.name}</Heading>
 
-                <p className="text-gray-500 text-center text-lg">{profile.bio}</p>
+                <p className="text-gray-500 dark:text-gray-400 text-center text-lg">{profile.bio}</p>
                 </div>
             </main>
 
             {profile.communities.length && (
                 <section className="max-w-7xl mx-auto mt-10 space-y-5 px-5 lg:p-0 ">
-                    <Heading level={2} className="bg-linear-to-r from-cyan-500 to-cyan-800 text-center bg-clip-text text-transparent">
+                    <Heading level={2} className="bg-linear-to-r from-cyan-500 to-cyan-800 dark:to-cyan-600 text-center bg-clip-text text-transparent">
                         Mis Comunidades 
                     </Heading>
 
@@ -83,7 +83,7 @@ export default async function ProfilePage({params}: PageProps<'/profiles/[id]'>)
 
             {profile.meetis.length && (
                 <section className="mb-20 max-w-7xl mx-auto mt-10 space-y-5 px-5 lg:px-0 ">
-                    <Heading level={2} className="bg-linear-to-r from-cyan-500 to-cyan-800 text-center bg-clip-text text-transparent">
+                    <Heading level={2} className="bg-linear-to-r from-cyan-500 to-cyan-800 dark:to-cyan-600 text-center bg-clip-text text-transparent">
                         Mis Próximos Meetis 
                     </Heading>
 

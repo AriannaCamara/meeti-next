@@ -9,7 +9,7 @@ export default async function Header() {
   const {isAuth} = await requiereAuth()
 
   return (
-    <header className="border-b border-gray-200">
+    <header className="border-b border-gray-200 dark:border-white/10">
         <div className="md:flex md:justify-between md:items-center max-w-7xl mx-auto p-5 lg:px-0">
             <div className="flex justify-center py-10 md:py-0">
             <Link href='/'>

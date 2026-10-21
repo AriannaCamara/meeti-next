@@ -7,7 +7,7 @@ export default async function CategoryList() {
 
     return (
         <section className="max-w-7xl mx-auto py-10 space-y-5 px-5 lg:px-0">
-            <Heading level={2} className="bg-linear-to-r from-cyan-500 to-cyan-800 text-center bg-clip-text text-transparent">Categorías</Heading>
+            <Heading level={2} className="bg-linear-to-r from-cyan-500 to-cyan-800 dark:to-cyan-600 text-center bg-clip-text text-transparent">Categorías</Heading>
             <ul className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-5 p-5 md:p-0 mt-10">
                 {categories.map(category => <CategoryCard key={category.id} category={category} /> )}
             </ul>

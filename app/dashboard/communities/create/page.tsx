@@ -16,7 +16,7 @@ export default async function CreateCommunityPage() {
 
   return (
     <>
-        <Heading className="mb-10 bg-linear-to-r from-cyan-600 to-cyan-800 text-center bg-clip-text text-transparent">Administra Tus Comunidades</Heading>
+        <Heading className="mb-10 bg-linear-to-r from-cyan-600 to-cyan-800 dark:to-cyan-600 text-center bg-clip-text text-transparent">Administra Tus Comunidades</Heading>
             <Link
                 href="/dashboard/communities" 
                 className="mt-5 block lg:inline-block text-center bg-cyan-600 hover:bg-cyan-700 transition-colors text-xs lg:text-xl text-white py-3 px-10  font-bold rounded-full"

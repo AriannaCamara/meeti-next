@@ -10,7 +10,7 @@ import UploadImage from "@/shared/components/upload/UploadImage";
 
 const DynamicLocationPicker = dynamic(() => import('./LocationPicker'), {
   ssr: false,
-  loading: () => <p className="text-sm text-gray-500">Cargando mapa...</p>
+  loading: () => <p className="text-sm text-gray-500 dark:text-gray-400">Cargando mapa...</p>
 })
 
 export default function MeetiForm() {
@@ -22,7 +22,7 @@ export default function MeetiForm() {
   return (
     <>
       <fieldset className="space-y-3">
-        <legend className="font-black text-4xl mb-5  uppercase bg-linear-to-r from-cyan-500 to-cyan-800 bg-clip-text text-transparent">Detalles Meeti</legend>
+        <legend className="font-black text-4xl mb-5  uppercase bg-linear-to-r from-cyan-500 to-cyan-800 dark:from-cyan-400 dark:to-cyan-600 bg-clip-text text-transparent">Detalles Meeti</legend>
 
         <FormLabel htmlFor="title">Nombre Meeti</FormLabel>
         <FormInput
@@ -96,7 +96,7 @@ export default function MeetiForm() {
       {!isVirtual && (
 
       <fieldset className="space-y-3">
-        <legend className="font-black text-4xl mb-5  uppercase bg-linear-to-r from-cyan-500 to-cyan-800 bg-clip-text text-transparent">
+        <legend className="font-black text-4xl mb-5  uppercase bg-linear-to-r from-cyan-500 to-cyan-800 dark:from-cyan-400 dark:to-cyan-600 bg-clip-text text-transparent">
           Ubicación Meeti
         </legend>
 
@@ -144,7 +144,7 @@ export default function MeetiForm() {
           <FormError>{errors.location.country.message}</FormError>
         )}
 
-        <p className="text-sm text-gray-500">Haz clic en el mapa para autocompletar la dirección (opcional):</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">Haz clic en el mapa para autocompletar la dirección (opcional):</p>
         <DynamicLocationPicker />
 
       </fieldset>

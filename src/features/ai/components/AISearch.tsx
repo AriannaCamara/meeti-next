@@ -54,7 +54,7 @@ export default function AISearch() {
 
                         return (
                             <div key={key} className='space-y-4' >
-                                <p className='text-gray-700 font-medium'>
+                                <p className='text-gray-700 dark:text-gray-200 font-medium'>
                                     Encontré {communities.length === 1 ? 'Esta Comunidad' : `${communities.length} Comunidades`} sobre {''}
                                     <span className='text-orange-600 font-bold'>{part.input.query}</span>
                                 </p>
@@ -92,7 +92,7 @@ export default function AISearch() {
 
                         return (
                             <div key={key} className='space-y-4'>
-                                <p className='text-gray-700 font-medium'>
+                                <p className='text-gray-700 dark:text-gray-200 font-medium'>
                                     Encontré{''}
                                     {meetis.length === 1 ? (
                                         <>
@@ -136,7 +136,7 @@ export default function AISearch() {
             ))}
 
             {status === 'submitted' && (
-                <div className='flex items-center justify-center py-5 gap-2 text-gray-500'>
+                <div className='flex items-center justify-center py-5 gap-2 text-gray-500 dark:text-gray-400'>
                     <div className='animate-spin size-5 border-2 border-t-transparent border-gray-400 rounded-full' />
                     Pensando...
                 </div>

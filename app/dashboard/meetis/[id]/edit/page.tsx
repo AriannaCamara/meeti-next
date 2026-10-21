@@ -25,7 +25,7 @@ export default async function EditMeetiPage(props: PageProps<'/dashboard/meetis/
 
     return (
         <>
-            <Heading className="font-black uppercase text-4xl bg-linear-to-r mb-10 from-cyan-500 to-cyan-800 text-center bg-clip-text text-transparent">Editar Meeti: {meeti.data.title}</Heading>
+            <Heading className="font-black uppercase text-4xl bg-linear-to-r mb-10 from-cyan-500 to-cyan-800 dark:to-cyan-600 text-center bg-clip-text text-transparent">Editar Meeti: {meeti.data.title}</Heading>
         
             <Link
                         href="/dashboard/meetis" 

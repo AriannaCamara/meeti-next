@@ -41,13 +41,13 @@ export default function NotificationList({notifications} : Props) {
                             {notification.actorName} - {notification.message} {''}
                             <span className="font-bold text-orange-600">{notification.target}</span>
                         </p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
                             {formatCreatedDate(notification.createdAt)}
                         </p>
                     </div>
                 ))
             ) : (
-                <p className="text-center mt-10 text-lg text-gray-600">
+                <p className="text-center mt-10 text-lg text-gray-600 dark:text-gray-300">
                     No hay notificaciones
                 </p>
             )}

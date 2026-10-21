@@ -52,13 +52,13 @@ export default async function MeetiPage(props: PageProps<'/meetis/[id]'>) {
         <>
             <nav className="py-5 border-b border-gray-200 px-5 lg:px-0">
                 <div className="max-w-7xl mx-auto flex flex-col gap-3  items-start lg:flex-row lg:justify-between lg:gap-0">
-                    <p className=" text-gray-600">Categoría: {''}
+                    <p className=" text-gray-600 dark:text-gray-300">Categoría: {''}
                         <Link
                             href={`/categories/${meeti.data.category.id}`}
                             className="font-black"
                         >{meeti.data.category.name}</Link>
                     </p>
-                    <p className=" text-gray-600">Comunidad: {''}
+                    <p className=" text-gray-600 dark:text-gray-300">Comunidad: {''}
                         <Link
                             href={`/communities/${meeti.data.community.id}`}
                             className="font-black"
@@ -80,7 +80,7 @@ export default async function MeetiPage(props: PageProps<'/meetis/[id]'>) {
                     </div>
                 
 
-                <Heading className="font-black  mt-5 uppercase bg-linear-to-r mb-10 from-cyan-500 to-cyan-800 text-center bg-clip-text text-transparent">{meeti.data.title}</Heading>
+                <Heading className="font-black  mt-5 uppercase bg-linear-to-r mb-10 from-cyan-500 to-cyan-800 dark:to-cyan-600 text-center bg-clip-text text-transparent">{meeti.data.title}</Heading>
 
                 <main className="max-w-7xl mx-auto grid grid-cols-1 gap-5 lg:grid-cols-3 p-5 lg:px-0 mt-10">
                 <section className="lg:col-span-2">
@@ -95,7 +95,7 @@ export default async function MeetiPage(props: PageProps<'/meetis/[id]'>) {
                     <p className="mt-5 text-lg">{meeti.data.details}</p>
                 </section>
 
-                <aside className="bg-slate-100 rounded-2xl">
+                <aside className="bg-slate-100 dark:bg-slate-800 rounded-2xl">
                     {isVirtual && (
                         <p className="bg-orange-400 m-5 rounded-lg text-center p-3 text-white font-bold">Este Meeti es Virtual</p>
                     )}
@@ -110,7 +110,7 @@ export default async function MeetiPage(props: PageProps<'/meetis/[id]'>) {
                     )}
 
                     <section className="space-y-5 p-10 ">
-                        <Heading level={2} className="font-black  mt-5 uppercase bg-linear-to-r mb-10 from-cyan-500 to-cyan-800 text-center bg-clip-text text-transparent">Información Meeti</Heading>
+                        <Heading level={2} className="font-black  mt-5 uppercase bg-linear-to-r mb-10 from-cyan-500 to-cyan-800 dark:to-cyan-600 text-center bg-clip-text text-transparent">Información Meeti</Heading>
                         
                         <p>
                             <span className="font-bold">Fecha: </span> {''}

@@ -14,7 +14,7 @@ export default async function ActiveSessionsList() {
     
   return (
     <>
-        <Heading level={2} className="mt-10 bg-linear-to-r mb-10 from-cyan-500 to-cyan-800 bg-clip-text text-transparent">Sessiones Activas</Heading>
+        <Heading level={2} className="mt-10 bg-linear-to-r mb-10 from-cyan-500 to-cyan-800 dark:to-cyan-600 bg-clip-text text-transparent">Sessiones Activas</Heading>
         <div className="mt-10 p-5 border border-gray-200 rounded-2xl">
             {sessions.map(session => (
                 <div key={session.id} className="p-5 shadow-xs flex items-center">

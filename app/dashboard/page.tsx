@@ -10,7 +10,7 @@ export default async function DashboardPage() {
   return (
     <div>
       <>
-        <Heading className="bg-linear-to-r from-cyan-500 to-cyan-800 text-center bg-clip-text text-transparent">Panel de Administracion</Heading>
+        <Heading className="bg-linear-to-r from-cyan-500 to-cyan-800 dark:to-cyan-600 text-center bg-clip-text text-transparent">Panel de Administracion</Heading>
       </>
     </div>
   )

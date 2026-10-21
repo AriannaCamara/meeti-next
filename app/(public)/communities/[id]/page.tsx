@@ -53,11 +53,11 @@ export default async  function CommunityPage(props: PageProps<'/communities/[id]
                             priority
                         />
                     </div>
-                        <Heading className="text-center bg-linear-to-r from-cyan-500 to-cyan-800 bg-clip-text text-transparent">{community.data.name}</Heading>
-                        <p className="text-gray-600 text-center text-lg">{community.data.description}</p>
-                        <p className="text-gray-600 text-center text-sm">{community.memberCount} {pluralize('Miembro', community.memberCount)}</p>
+                        <Heading className="text-center bg-linear-to-r from-cyan-500 to-cyan-800 dark:to-cyan-600 bg-clip-text text-transparent">{community.data.name}</Heading>
+                        <p className="text-gray-600 dark:text-gray-300 text-center text-lg">{community.data.description}</p>
+                        <p className="text-gray-600 dark:text-gray-300 text-center text-sm">{community.memberCount} {pluralize('Miembro', community.memberCount)}</p>
                     </div>
-                    <div className="bg-slate-100 p-5 rounded-2xl">
+                    <div className="bg-slate-100 dark:bg-slate-800 p-5 rounded-2xl">
                     
                         <OrganizerCard 
                             organizer={community.data.admin}
