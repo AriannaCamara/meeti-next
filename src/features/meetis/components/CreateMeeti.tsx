@@ -1,6 +1,6 @@
 "use client"
 
-import { Form, FormSubmit } from "@/shared/components/forms"
+import { Form, FormSubmit, FormErrorSummary } from "@/shared/components/forms"
 import MeetiForm from "./MeetiForm"
 import { useSession } from "@/lib/auth-client"
 import { FormProvider, useForm } from "react-hook-form"
@@ -61,7 +61,7 @@ export default function CreateMeeti() {
   const { isSubmitting } = methods.formState
 
   const onInvalid = () => {
-    toast.error('Revisa los campos marcados del formulario')
+    toast.error('Revisa los campos del formulario')
   }
 
   return (
@@ -70,6 +70,7 @@ export default function CreateMeeti() {
         onSubmit={methods.handleSubmit(onSubmit, onInvalid)} noValidate
       >
         <MeetiForm />
+        <FormErrorSummary<MeetiInput> />
         <FormSubmit
           value={isSubmitting ? 'Creando...' : 'Crear Meeti'}
           disabled={isSubmitting}

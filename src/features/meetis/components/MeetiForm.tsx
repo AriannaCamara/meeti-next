@@ -4,7 +4,7 @@ import { FormError, FormInput, FormLabel, FormTextarea, FormToggle } from "@/sha
 import CommunityFormField from "./CommunityFormField";
 import CategoryFormField from "./CategoryFormField";
 import dynamic from "next/dynamic";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useFormState } from "react-hook-form";
 import { MeetiInput } from "../schemas/meetiSchema";
 import UploadImage from "@/shared/components/upload/UploadImage";
 
@@ -15,7 +15,8 @@ const DynamicLocationPicker = dynamic(() => import('./LocationPicker'), {
 
 export default function MeetiForm() {
 
-  const { register, watch, formState: {errors}, setValue} = useFormContext<MeetiInput>()
+  const { register, watch, setValue} = useFormContext<MeetiInput>()
+  const { errors } = useFormState<MeetiInput>()
   const isVirtual = watch('virtual')
 
   return (

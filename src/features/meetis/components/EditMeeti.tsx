@@ -1,6 +1,6 @@
 
 "use client" 
-import { Form, FormSubmit } from "@/shared/components/forms";
+import { Form, FormSubmit, FormErrorSummary } from "@/shared/components/forms";
 import MeetiForm from "./MeetiForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { MeetiFormInput, MeetiInput, MeetiSchema } from "../schemas/meetiSchema";
@@ -57,6 +57,7 @@ export default function EditMeeti({meeti} : Props) {
     <FormProvider {...methods}>
     <Form onSubmit={methods.handleSubmit(onSubmit, onInvalid)} >
         <MeetiForm />
+        <FormErrorSummary<MeetiInput> />
         <FormSubmit
             value={isSubmitting ? 'Guardando...' : 'Actualizar'}
             disabled={isSubmitting}

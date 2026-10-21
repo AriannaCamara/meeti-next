@@ -6,4 +6,5 @@ export {FormError} from "./FormError";
 export {FormTextarea} from "./FormTextArea";
 export {FormToggle} from "./FormToggle";
 export {FormSelect} from "./FormSelect";
+export {FormErrorSummary} from "./FormErrorSummary";
 

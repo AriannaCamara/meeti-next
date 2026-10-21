@@ -6,6 +6,7 @@ import { useFormContext } from "react-hook-form"
 import { FormError } from "../forms"
 import { MeetiInput } from "@/src/features/meetis/schemas/meetiSchema"
 import { ProfileInput } from "@/src/features/profile/schemas/profileSchema"
+import toast from "react-hot-toast"
 
 type Props = {
     uploadedImageLabel: string
@@ -22,9 +23,19 @@ export default function UploadImage({uploadedImageLabel}: Props) {
                 endpoint={'meetiUploader'}
                 className="ut-button:bg-orange-500"
                 onClientUploadComplete={(res) => {
-                    setUploadedImage(res[0].ufsUrl)
-                    setValue('image', res[0].ufsUrl, {shouldValidate: true})
+                    const url = res?.[0]?.ufsUrl
+                    if (!url) {
+                        toast.error('La subida no devolvió una URL de imagen')
+                        return
+                    }
+                    setUploadedImage(url)
+                    setValue('image', url, {shouldValidate: true})
                     clearErrors('image')
+                    toast.success('Imagen subida correctamente')
+                }}
+                onUploadError={(error) => {
+                    console.error('Upload error:', error)
+                    toast.error(`Error al subir la imagen: ${error.message}`)
                 }}
                 content={{
                     button: 'Subir Imagen',
@@ -39,7 +50,7 @@ export default function UploadImage({uploadedImageLabel}: Props) {
 
             {uploadedImage && (
                 <>
-                    <p className="text-lg">{uploadedImageLabel}</p>
+                    <p className="text-lg font-semibold text-green-600">{uploadedImageLabel}</p>
                     <Image
                         src={uploadedImage}
                         alt="Imagen publicada"
