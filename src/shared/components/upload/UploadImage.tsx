@@ -16,10 +16,20 @@ export default function UploadImage({uploadedImageLabel}: Props) {
 
     const { formState: {errors}, setValue, clearErrors, getValues } = useFormContext<CommunityInput | MeetiInput | ProfileInput >()
     const [uploadedImage, setUploadedImage] = useState('')
+    const [showDropzone, setShowDropzone] = useState(true)
     const currentImage = getValues('image') ? getValues('image') : null
-  return (
+    const image = uploadedImage || currentImage
+
+    const handleChange = () => {
+        setUploadedImage('')
+        setValue('image', '', { shouldValidate: true })
+        setShowDropzone(true)
+    }
+
+    return (
     <>
-        <UploadDropzone
+        {showDropzone && (
+            <UploadDropzone
                 endpoint={'meetiUploader'}
                 className="ut-button:bg-orange-500"
                 onClientUploadComplete={(res) => {
@@ -31,6 +41,7 @@ export default function UploadImage({uploadedImageLabel}: Props) {
                     setUploadedImage(url)
                     setValue('image', url, {shouldValidate: true})
                     clearErrors('image')
+                    setShowDropzone(false)
                     toast.success('Imagen subida correctamente')
                 }}
                 onUploadError={(error) => {
@@ -46,30 +57,29 @@ export default function UploadImage({uploadedImageLabel}: Props) {
                     mode: 'auto'
                 }}
             />
-            {errors.image && <FormError>{errors.image.message}</FormError>}
+        )}
 
-            {uploadedImage && (
-                <>
-                    <p className="text-lg font-semibold text-green-600">{uploadedImageLabel}</p>
-                    <Image
-                        src={uploadedImage}
-                        alt="Imagen publicada"
-                        width={300}
-                        height={200}
-                    />
-                </>
-            )}
-            {currentImage && !uploadedImage && (
-                <>
-                    <p className="text-lg">Imagen Actual:</p>
-                    <Image
-                        src={currentImage}
-                        alt="Imagen publicada"
-                        width={300}
-                        height={200}
-                    />
-                </>
-            )}
+        {errors.image && <FormError>{errors.image.message}</FormError>}
+
+        {image && (
+            <div className="space-y-2">
+                <p className="text-lg font-semibold text-green-600">{uploadedImageLabel}</p>
+                <Image
+                    src={image}
+                    alt="Imagen publicada"
+                    width={300}
+                    height={200}
+                    className="rounded-lg border"
+                />
+                <button
+                    type="button"
+                    onClick={handleChange}
+                    className="text-sm text-orange-600 underline hover:text-orange-700"
+                >
+                    Cambiar imagen
+                </button>
+            </div>
+        )}
     </>
   )
 }

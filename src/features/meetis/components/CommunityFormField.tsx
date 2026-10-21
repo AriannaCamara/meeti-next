@@ -19,7 +19,7 @@ function CommunityOptions() {
                 {...register('communityId')}
             >
                 <option value="">Selecciona Comunidad</option>
-                {communities.map(community => <option key={community.id} value={community.id}>{community.name}</option> )}
+                {Array.isArray(communities) && communities.map(community => <option key={community.id} value={community.id}>{community.name}</option> )}
             </FormSelect>
             {errors.communityId && <FormError>{errors.communityId.message}</FormError>}
         </>

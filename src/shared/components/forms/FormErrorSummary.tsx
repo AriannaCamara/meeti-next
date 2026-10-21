@@ -3,6 +3,24 @@
 import { useFormState } from "react-hook-form"
 import { FieldErrors, FieldValues } from "react-hook-form"
 
+const FIELD_LABELS: Record<string, string> = {
+    title: 'Nombre del Meeti',
+    details: 'Detalles',
+    image: 'Imagen',
+    communityId: 'Comunidad',
+    categoryId: 'Categoría Meeti',
+    availableSeats: 'Cupo',
+    date: 'Fecha',
+    time: 'Hora',
+    virtual: '¿Evento virtual?',
+    'location.placeName': 'Nombre del lugar',
+    'location.address': 'Dirección',
+    'location.city': 'Ciudad',
+    'location.country': 'País',
+    'location.lat': 'Ubicación (latitud)',
+    'location.lng': 'Ubicación (longitud)',
+}
+
 function flattenErrors(errors: FieldErrors): { path: string, message: string }[] {
     const result: { path: string, message: string }[] = []
 
@@ -32,12 +50,12 @@ export function FormErrorSummary<T extends FieldValues>() {
     return (
         <div className="rounded-xl border-l-4 border-red-600 bg-red-50 p-4 space-y-1 dark:bg-red-950/40">
             <p className="font-bold text-red-700 dark:text-red-300">
-                Corrige estos {flat.length} {flat.length === 1 ? 'campo' : 'campos'}:
+                Corrige {flat.length === 1 ? 'este campo' : `estos ${flat.length} campos`}:
             </p>
             <ul className="list-disc pl-5 text-sm text-red-600 dark:text-red-200">
                 {flat.map(({ path, message }) => (
                     <li key={path}>
-                        <span className="font-semibold">{path}</span>: {message}
+                        <span className="font-semibold">{FIELD_LABELS[path] ?? path}</span>: {message}
                     </li>
                 ))}
             </ul>
