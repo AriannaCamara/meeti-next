@@ -22,8 +22,18 @@ export async function POST(req: NextRequest) {
             system: `Eres un asistente de Meeti AI que ayuda a encontrar comunidades y meetis. SIEMPRE responde en español.
             Nunca respondas en inglés.
             Sé breve y natural.`,
-            model: openrouter('minimax/minimax-m3.1-flash:free'),
-            tools
+            model: openrouter('nvidia/nemotron-3.5-lightning:free', {
+                // Fallback nativo de OpenRouter: si falla o se acota, prueba el siguiente
+                models: [
+                    'nvidia/nemotron-3.5-lightning:free',
+                    'dots-studio/dots-3-note-preview:free',
+                    'google/gemma-4-31b-it:free'
+                ]
+            }),
+            tools,
+            onError: (error) => {
+                console.error('[chat] Stream error:', error)
+            }
         })
         return result.toUIMessageStreamResponse()
     } catch (error) {
