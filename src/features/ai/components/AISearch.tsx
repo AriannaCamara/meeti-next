@@ -14,10 +14,23 @@ type RecommendedCommunity = Omit<SelectCommunity, 'createdAt' | 'createdBy'> & {
 
 export default function AISearch() {
     const [input, setInput] = useState('')
-    const {messages, status, sendMessage}  = useChat<Message>() 
+    const {messages, status, sendMessage, error, clearError}  = useChat<Message>() 
+
+    const onSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+        if (error) clearError()
+        sendMessage({text: input})
+        setInput('')
+    }
 
     return (
         <>
+            {error && (
+                <div className='mt-5 p-4 border border-red-300 bg-red-50 dark:bg-red-950/30 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300 text-sm'>
+                    El asistente está saturado o hubo un error. Intenta en unos minutos.
+                </div>
+            )}
+
             {messages.map(message => (
                 <div 
                     key={message.id} 
@@ -143,11 +156,7 @@ export default function AISearch() {
             )}
 
             <Form
-                onSubmit={e => {
-                    e.preventDefault()
-                    sendMessage({text: input})
-                    setInput('')
-                }}
+                onSubmit={onSubmit}
             >
                 <FormLabel htmlFor="prompt">Busca Meetis y Communidades utilizando IA</FormLabel>
                 <FormTextarea 
