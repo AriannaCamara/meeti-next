@@ -207,7 +207,7 @@ No es un clon de un tutorial — es una aplicación completa lista para producci
 Creado por **Arianna Camara** — Junior Fullstack Developer.
 
 - 💻 [GitHub](https://github.com/AriannaCamara)
-- 🔗 LinkedIn: *agrega aquí la URL de tu perfil*
+- 🔗 [LinkedIn](https://www.linkedin.com/in/arianna-camara-65238a2a5)
 
 ---
 

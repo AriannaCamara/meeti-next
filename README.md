@@ -207,7 +207,7 @@ This is not a tutorial clone — it is a full production application that requir
 Built by **Arianna Camara** — Junior Fullstack Developer.
 
 - 💻 [GitHub](https://github.com/AriannaCamara)
-- 🔗 LinkedIn: *add your profile URL here*
+- 🔗 [LinkedIn](https://www.linkedin.com/in/arianna-camara-65238a2a5)
 
 ---
 
