@@ -9,10 +9,12 @@ import { meetiService } from "@/src/features/meetis/services/MeetiService";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({params}: PageProps<'/meetis/[id]'>) : Promise<Metadata> {
     const { id } = await params
     const meeti = await meetiService.getMeetiById(id)
+    if(!meeti) notFound()
 
     return {
         title: generatePageTitle(`${meeti.title}`),
@@ -44,7 +46,7 @@ export default async function MeetiPage(props: PageProps<'/meetis/[id]'>) {
     const { id } = await props.params
     const meeti = await meetiService.getMeetiWithDetails(id, session?.user)
     
-    if(meeti.context.isPasMeeti) throw new Error('Meeti No Disponible')
+    if(!meeti || meeti.context.isPasMeeti) notFound()
         
     const {virtual: isVirtual, location} = meeti.data
     

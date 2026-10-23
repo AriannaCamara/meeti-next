@@ -5,11 +5,12 @@ import EditMeeti from "@/src/features/meetis/components/EditMeeti";
 import { meetiService } from "@/src/features/meetis/services/MeetiService";
 import { Metadata } from "next";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
 
 export async function generateMetadata({params} : PageProps<'/dashboard/communities/[id]/edit'>) : Promise<Metadata> {
     const { id } = await params
     const meeti = await meetiService.getMeetiById(id)
+    if(!meeti) notFound()
     return {
         title: generatePageTitle(`Editar Meeti: ${meeti.title}`)
     }

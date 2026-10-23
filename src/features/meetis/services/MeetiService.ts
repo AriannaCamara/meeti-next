@@ -53,14 +53,12 @@ class MeetiService {
     }
 
     async getMeetiById(meetiId: string) {
-        const meeti = await this.meetiRepository.findById(meetiId)
-        if(!meeti) throw new Error('Meeti No Encontrado')
-        return meeti
+        return await this.meetiRepository.findById(meetiId)
     }
 
     async getMeetiWithDetails(meetiId: string, user?: User) {
         const meeti = await this.meetiRepository.findFullById(meetiId)
-        if(!meeti) throw new Error('Meeti no encontrado')
+        if(!meeti) return null
         
         const isPasMeeti = MeetiPolicy.isPastMeeti(meeti)
 
@@ -95,6 +93,7 @@ class MeetiService {
 
     async getMeetiWithPermissions(meetiId: string, user: User) {
         const meeti = await this.getMeetiById(meetiId)
+        if(!meeti) throw new Error('Meeti no encontrado')
         return {
             data: meeti,
             context: {
@@ -123,6 +122,7 @@ class MeetiService {
 
     async getMeetiAttendees(meetiId: string, user: User) {
         const meeti = await this.getMeetiById(meetiId)
+        if(!meeti) throw new Error('Meeti no encontrado')
         if(!MeetiPolicy.canViewAttendes(user, meeti)) {
             throw new Error('No Autorizado')
         }
@@ -141,6 +141,12 @@ class MeetiService {
     async deleteMeeti(meetiId: string, user: User) {
         // obtener meeti
         const meeti = await this.getMeetiById(meetiId)
+        if(!meeti) {
+            return {
+                error: 'Meeti no encontrado',
+                success: ''
+            }
+        }
         // revisar permiso
         if(!MeetiPolicy.canDelete(user, meeti)) {
             throw new Error('No tienes permiso para eliminar')

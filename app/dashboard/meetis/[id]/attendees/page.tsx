@@ -3,12 +3,13 @@ import Heading from "@/shared/components/typography/Heading"
 import { generatePageTitle } from "@/shared/utils/metadata"
 import { meetiService } from "@/src/features/meetis/services/MeetiService"
 import { Metadata } from "next"
-import { redirect } from "next/navigation"
+import { redirect, notFound } from "next/navigation"
 
 
 export async function generateMetadata({params} : PageProps<'/dashboard/meetis/[id]/attendees'>) : Promise<Metadata> {
     const { id } = await params
     const meeti = await meetiService.getMeetiById(id)
+    if(!meeti) notFound()
     return {
         title: generatePageTitle(`Asistentes Confirmados Meeti: ${meeti.title}`)
     }

@@ -149,10 +149,14 @@ class MeetiRepository implements IMeetiRepository {
 
     async searchByTopic(query: string): Promise<SelectMeeti[]> {
         const pattern = `%${query}%`
+        const today = format(new Date(), 'yyyy-MM-dd')
         const meetis = await db.query.meeti.findMany({
-            where: or(
-                ilike(meeti.title, pattern),
-                ilike(meeti.details, pattern)
+            where: and(
+                gte(meeti.date, today),
+                or(
+                    ilike(meeti.title, pattern),
+                    ilike(meeti.details, pattern)
+                )
             )
         })
         return meetis
@@ -169,7 +173,7 @@ class MeetiRepository implements IMeetiRepository {
         }
         const today = format(new Date(), 'yyyy-MM-dd')
 
-        const filters: SQL[] = [eq(meeti.virtual, true)]
+        const filters: SQL[] = [eq(meeti.virtual, true), gte(meeti.date, today)]
         if(isToday) filters.push(eq(meeti.date, today))
         if(cleanQuery && cleanQuery.length > 0) {
             const pattern = `%${cleanQuery}%`
@@ -199,7 +203,7 @@ class MeetiRepository implements IMeetiRepository {
         }
         const todayStr = format(new Date(), 'yyyy-MM-dd')
 
-        const meetiFilters: SQL[] = [eq(meeti.virtual, false)]
+        const meetiFilters: SQL[] = [eq(meeti.virtual, false), gte(meeti.date, todayStr)]
         if(isToday) meetiFilters.push(eq(meeti.date, todayStr))
         if(cleanQuery && cleanQuery.length > 0) {
             const pattern = `%${cleanQuery}%`
@@ -214,7 +218,6 @@ class MeetiRepository implements IMeetiRepository {
             .select({ id: meeti.id })
             .from(meeti)
             .where(and(...meetiFilters))
-            .as('meeti_ids')
 
         const locationFilters: SQL[] = [inArray(meetiLocations.meetiId, meetiIds)]
         if(city) locationFilters.push(ilike(meetiLocations.city, `%${city}%`))
