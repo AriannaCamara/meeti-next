@@ -13,7 +13,7 @@ type Props = {
 
 export default function CommunityCard({community, target = false}: Props) {
   return (
-    <div className="mb-10 border border-slate-200 bg-white hover:shadow-lg transition-shadow rounded-xl">
+    <div className="mb-10 border border-slate-200 dark:border-white/10 bg-white dark:bg-gray-900 hover:shadow-lg transition-shadow rounded-xl">
       <div className="overflow-hidden">
         <Image
             src={community.image}
@@ -27,7 +27,7 @@ export default function CommunityCard({community, target = false}: Props) {
       <div className="p-5 space-y-3">
         <p className="line-clamp-3">{community.description}</p>
           {community.membersCount && <p className="text-gray-600 dark:text-gray-300 text-sm">{community.membersCount} {pluralize('Miembro', +community.membersCount)}</p>}
-        <Heading level={3} className="font-bold text-2xl text-cyan-700 text-center line-clamp-1">{community.name}</Heading>
+        <Heading level={3} className="font-bold text-2xl text-cyan-700 dark:text-cyan-400 text-center line-clamp-1">{community.name}</Heading>
         <Link
             href={`/communities/${community.id}`}
             className="rounded-full bg-orange-500 hover:bg-orange-600 transition-colors text-xl text-white py-3 px-10 mt-10 font-bold block text-center"
